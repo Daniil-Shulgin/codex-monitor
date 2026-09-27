@@ -14,6 +14,10 @@ Codex Monitor is a tiny always-on-top Windows monitor for local Codex work in VS
 
 ![Codex Monitor expanded widget showing task states and elapsed time](docs/assets/expanded.png)
 
+**Collapsed in use**
+
+![Codex Monitor collapsed widget over a full-screen window](docs/assets/collapsed-in-use.jpg)
+
 **Settings**
 
 ![Codex Monitor settings window](docs/assets/settings.png)

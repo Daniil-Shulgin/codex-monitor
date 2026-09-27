@@ -1,47 +1,75 @@
 # Codex Monitor
 
-Компактный полупрозрачный Windows-виджет для локального Codex в VS Code. Показывает оставшиеся квоты 5H/W, время сброса и состояния текущих потоков. Развёрнутый режим добавляет названия и длительность задач.
+Codex Monitor is a tiny always-on-top Windows monitor for local Codex work in VS Code.
 
-Tauri 2 · Rust · React · TypeScript. Windows 10/11 x64 и WebView2.
+**Status:** `v0.1.0-beta`
 
-## Запуск
+## Screenshots
 
-После сборки:
+**Collapsed**
 
-- приложение: `src-tauri/target/release/codex-monitor.exe`;
-- NSIS-установщик: `src-tauri/target/release/bundle/nsis/Codex Monitor_0.1.0_x64-setup.exe`.
+![Codex Monitor collapsed widget showing quota and task counters](docs/assets/collapsed.png)
 
-Приложение работает отдельно от VS Code; терминал не нужен. Для данных необходим установленный и авторизованный Codex extension в VS Code. Исполняемый файл Codex определяется автоматически.
+**Expanded**
 
-Кнопки закрепления и разворачивания находятся справа; в развёрнутом режиме внизу справа также есть настройки и выход. При смене режима правый и нижний края окна остаются на месте. Виджет можно перетаскивать за фон. **Ctrl+Shift+C** переключает click-through глобально; вернуть управление мышью также можно через трей. В трее доступны настройки, скрытие, автозапуск и выход.
+![Codex Monitor expanded widget showing task states and elapsed time](docs/assets/expanded.png)
 
-Настройки: Dark/Light/System, прозрачность 55–100%, закрепление, click-through, горячая клавиша, автозапуск, звуки для Needs action/Done, громкость и интервал обновления квот. Внизу Settings есть необязательный Support modal с публичным адресом USDT TRC20 и локальным QR-кодом; приложение не подключает кошелёк и не выполняет платежи. Системные всплывающие уведомления не показываются. Таймеры обновляются локально каждую секунду.
+**Settings**
 
-## Разработка и сборка
+![Codex Monitor settings window](docs/assets/settings.png)
 
-Требуются Node.js 22.12+ (рекомендуется LTS), Rust stable MSVC, Visual Studio 2022 Build Tools с C++ workload и Windows SDK, WebView2 Runtime.
+## What it shows
 
-```powershell
-npm install
-npm run tauri:dev
-npm run typecheck
-npm run lint
-npm test
-npm run test:rust
-cargo fmt --manifest-path src-tauri/Cargo.toml --check
-cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets -- -D warnings
-npm run build
-npm run tauri:build
-```
+- Remaining 5-hour and weekly Codex quota, with reset countdowns.
+- Task states: Running, Needs action, and Done.
+- Elapsed task time in the expanded view.
+- A compact collapsed view and a task-list expanded view.
 
-Локальная подпись не требуется. NSIS использует установку для текущего пользователя. При отсутствии WebView2 установщик предлагает стандартный bootstrapper Microsoft.
+## Why it exists
 
-## Данные и ограничения
+Codex can work for a while in the background. The widget lets you check quota and task state while another window is in front of VS Code.
 
-Монитор не читает токены авторизации и не вызывает приватные HTTP API. Квоты запрашивает локальный авторизованный `codex app-server`. Rollout и SQLite читаются без изменения. Нет telemetry, аккаунтов или собственного сервера. Настройки и два ограниченных по размеру журнала находятся в `%APPDATA%\local.codex.monitor`; тексты разговоров и имена задач туда не записываются.
+## Features
 
-В проверенном Codex `0.155.0-alpha.16.3` отдельный процесс не получает поток ожидающих approvals другого IDE-сервера. Поэтому **полное обнаружение Needs action для approvals недоступно**. Явные прерывания/ошибки и доступные синхронные запросы ввода распознаются; отсутствие активности не используется как признак завершения. Automatic compaction count не входит в продукт.
+- Compact translucent widget with an optional always-on-top setting.
+- Collapsed and expanded modes; drag the widget to place it on screen.
+- Click-through mode, a configurable global shortcut, and a system-tray fallback for restoring mouse input.
+- Local quota monitoring and Running / Needs action / Done task states.
+- Sound alerts for Needs action and Done, with per-event controls and volume. No desktop notification pop-ups.
+- Dark, Light, and System themes; opacity control.
+- System-tray controls and optional Start with Windows.
+- An optional Support dialog in Settings.
 
-Отсутствующая квота — `—`; при потере подключения последнее значение помечается как устаревшее. Задача исчезает из списка через час без смены статуса и возвращается только при новом запуске в том же чате. Исторические Done-задачи при запуске не добавляются. Подробнее: [CODEX_DATA_SOURCES.md](CODEX_DATA_SOURCES.md).
+## Installation
 
-Архитектура: Rust provider → normalized snapshot → React. Парсер использует фиксированные ограничения памяти и дописываемые байтовые смещения; тесты генерируют большие потоки без хранения гигантских fixtures.
+Requires Windows 10 or 11, VS Code, and the Codex extension installed and signed in for local use. When the public beta is published, download the Windows installer from GitHub Releases and run it. An unsigned build may trigger a Windows SmartScreen warning.
+
+## Usage
+
+Launch Codex Monitor, then use Codex in VS Code. The widget shows available quota and task states automatically. Open Settings from the expanded widget or system tray. By default, **Ctrl+Shift+C** toggles click-through; you can change the shortcut in Settings. The tray menu can restore mouse input if the widget cannot be clicked.
+
+## Settings
+
+Settings cover theme, opacity, always-on-top, click-through, global shortcut, sound alerts and volume, quota refresh interval, and Start with Windows.
+
+## Support
+
+If Codex Monitor is useful to you, you can optionally support its development from the Support section in Settings.
+
+## Feedback
+
+Tried Codex Monitor? I'd like to hear how it works for you. [Report a bug](../../issues/new?template=bug_report.yml) or [share feedback](../../issues/new?template=feedback.yml).
+
+## Privacy
+
+Codex Monitor is a local-only utility. It has no telemetry or remote backend of its own and does not upload prompts or responses. The Support dialog only displays a public receiving address; the app does not connect to a wallet, process payments, or use a private key or seed phrase.
+
+## Known limitations
+
+- This beta supports Windows and local Codex in VS Code only. macOS, the Codex desktop app, and PyCharm / other JetBrains IDEs are not supported yet.
+- Needs action visibility depends on the local Codex / VS Code events available to an independent monitor. In particular, pending IDE approvals may not be visible.
+- This is beta software. An unsigned installer may prompt Windows SmartScreen.
+
+## License
+
+[MIT](LICENSE).

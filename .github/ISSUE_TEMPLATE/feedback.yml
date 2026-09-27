@@ -1,0 +1,27 @@
+name: Feedback
+description: Share your experience with Codex Monitor.
+title: "[Feedback] "
+body:
+  - type: textarea
+    id: usage
+    attributes:
+      label: How did you use Codex Monitor?
+    validations:
+      required: true
+  - type: textarea
+    id: useful
+    attributes:
+      label: What was useful?
+  - type: textarea
+    id: confusing
+    attributes:
+      label: What felt confusing or inconvenient?
+  - type: textarea
+    id: improve
+    attributes:
+      label: What would you improve?
+  - type: textarea
+    id: anything-else
+    attributes:
+      label: Anything else?
+      description: Optional.

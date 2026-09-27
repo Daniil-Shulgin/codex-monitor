@@ -32,6 +32,9 @@ pub fn send(task: &Task, settings: &Settings) {
     let sender = SENDER.get_or_init(|| {
         let (tx, rx) = mpsc::sync_channel::<Alert>(32);
         std::thread::spawn(move || {
+            // Keep the output stream alive after a short source finishes so the
+            // audio device can play samples already queued in its buffer.
+            let mut output = None;
             while let Ok(alert) = rx.recv() {
                 let done = alert.status == Status::Done;
                 let data: &[u8] = if done {
@@ -39,8 +42,11 @@ pub fn send(task: &Task, settings: &Settings) {
                 } else {
                     include_bytes!("../assets/needs-action.wav")
                 };
-                if let Ok((_stream, handle)) = rodio::OutputStream::try_default() {
-                    if let Ok(sink) = rodio::Sink::try_new(&handle) {
+                if output.is_none() {
+                    output = rodio::OutputStream::try_default().ok();
+                }
+                if let Some((_, handle)) = &output {
+                    if let Ok(sink) = rodio::Sink::try_new(handle) {
                         if let Ok(source) = rodio::Decoder::new(std::io::Cursor::new(data)) {
                             sink.set_volume(f32::from(alert.volume) / 100.0);
                             sink.append(source);

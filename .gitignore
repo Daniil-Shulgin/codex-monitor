@@ -1,0 +1,51 @@
+# Node / frontend output
+node_modules/
+dist/
+coverage/
+.nyc_output/
+*.tsbuildinfo
+
+# Rust / Tauri output
+src-tauri/target/
+src-tauri/gen/schemas/
+src-tauri/icons/[0-9]*x[0-9]*.png
+src-tauri/icons/Square*Logo.png
+src-tauri/icons/StoreLogo.png
+*.pdb
+*.exe
+*.msi
+*.msix
+
+# Local probes, runtime state, and Codex data
+.probe/
+.tools/
+.codex/
+sessions/
+rollouts/
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+settings.json
+*.log
+*.dmp
+
+# Local configuration and editor files
+.env
+.env.*
+*.local
+.vscode/
+.idea/
+*.code-workspace
+
+# Temporary and OS files
+*.tmp
+*.temp
+*.bak
+*.old
+*.orig
+*.rej
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini

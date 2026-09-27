@@ -1,0 +1,36 @@
+[package]
+name = "codex-monitor"
+version = "0.1.0"
+edition = "2021"
+default-run = "codex-monitor"
+
+[lib]
+name = "codex_monitor"
+crate-type = ["lib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "image-png"] }
+tauri-plugin-global-shortcut = "2"
+tauri-plugin-autostart = "2"
+tauri-plugin-single-instance = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", default-features = false, features = ["clock", "serde"] }
+notify = "8"
+rusqlite = { version = "0.32", features = ["bundled"] }
+sysinfo = { version = "0.33", default-features = false, features = ["system"] }
+fs2 = "0.4"
+rodio = { version = "0.20", default-features = false, features = ["wav"] }
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_System_JobObjects", "Win32_Security"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+strip = true
+lto = "thin"
+codegen-units = 1
+panic = "abort"

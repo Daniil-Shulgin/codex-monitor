@@ -46,7 +46,7 @@ Codex can work for a while in the background. The widget lets you check quota an
 
 ## Installation
 
-Requires Windows 10 or 11, VS Code, and the Codex extension installed and signed in for local use. When the public beta is published, download the Windows installer from GitHub Releases and run it. An unsigned build may trigger a Windows SmartScreen warning.
+Requires Windows 10 or 11, VS Code, and the Codex extension installed and signed in for local use. Download the Windows installer from [GitHub Releases](https://github.com/Daniil-Shulgin/codex-monitor/releases/tag/v0.1.0-beta) and run it. An unsigned build may trigger a Windows SmartScreen warning.
 
 ## Usage
 
